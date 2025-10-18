@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Panel de Administración{% endblock %}</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Heroicons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 flex min-h-screen">
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="w-64 bg-white shadow-xl flex flex-col justify-between fixed h-screen transition-all duration-300">
+    <div>
+      <!-- LOGO -->
+      <div class="flex items-center justify-center h-16 border-b">
+        <h1 class="text-2xl font-bold text-green-600">Las Repollas del Abuelo</h1>
+      </div>
+
+      <!-- MENÚ PRINCIPAL -->
+      <nav class="mt-6">
+        <ul class="space-y-1">
+
+          <li>
+            <a href="/reports/"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/reports/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="bar-chart-2" class="w-5 h-5"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/order/"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/order/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="shopping-cart" class="w-5 h-5"></i>
+              <span>Órdenes</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/purchase/"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/purchase/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="package" class="w-5 h-5"></i>
+              <span>Compras</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/production/"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/production' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="activity" class="w-5 h-5"></i>
+              <span>Producción</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'item_used_list' %}"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/item_used/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="layers" class="w-5 h-5"></i>
+              <span>Ingredientes Usados</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/ingredient/"
+              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/ingredient/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+              <i data-feather="droplet" class="w-5 h-5"></i>
+              <span>Ingredientes</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- PIE DEL SIDEBAR -->
+    <div class="border-t px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600">Conectado como:</p>
+          <p class="font-semibold text-gray-800">Administrador</p>
+        </div>
+        <i data-feather="user" class="w-6 h-6 text-gray-500"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <main class="flex-1 ml-64 p-8">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Inicializar íconos -->
+  <script>
+    feather.replace();
+  </script>
+</body>
+</html>

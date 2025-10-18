@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">📊 Reporte General</h1>
+
+    <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="p-4 bg-white rounded-xl shadow">
+            <h3 class="text-lg font-semibold">Órdenes Totales</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ total_orders }}</p>
+        </div>
+        <div class="p-4 bg-white rounded-xl shadow">
+            <h3 class="text-lg font-semibold">Compras Totales</h3>
+            <p class="text-3xl font-bold text-green-600">${{ total_purchases.total_cost|floatformat:2|default:0 }}</p>
+        </div>
+        <div class="p-4 bg-white rounded-xl shadow">
+            <h3 class="text-lg font-semibold">Ventas Totales</h3>
+            <p class="text-3xl font-bold text-purple-600">${{ total_production.total_sales|floatformat:2|default:0 }}</p>
+        </div>
+    </div>
+
+    <h2 class="text-xl font-semibold mb-2">🌿 Stock Actual por Ingrediente</h2>
+    <canvas id="stockChart" width="400" height="200"></canvas>
+
+    <h2 class="text-xl font-semibold mt-8 mb-2">📦 Top 5 Ingredientes Más Comprados</h2>
+    <canvas id="topIngredientsChart" width="400" height="200"></canvas>
+
+    <h2 class="text-xl font-semibold mt-8 mb-2">🥬 Producción (Repollas vs Cajas)</h2>
+    <canvas id="productionChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Datos desde Django
+    const ingredientNames = {{ ingredient_names|safe }};
+    const ingredientStocks = {{ ingredient_stocks|safe }};
+    const topNames = {{ top_names|safe }};
+    const topQuantities = {{ top_quantities|safe }};
+    const totalRepollasRaw = {{ total_production.total_repollas|default:0 }};
+
+    // Calculamos cajas y repollas sueltas
+    const totalBoxes = Math.floor(totalRepollasRaw / 6);
+    const remainingRepollas = totalRepollasRaw % 6;
+
+    // Stock Chart
+    new Chart(document.getElementById('stockChart'), {
+        type: 'bar',
+        data: {
+            labels: ingredientNames,
+            datasets: [{
+                label: 'Stock disponible',
+                data: ingredientStocks,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Top ingredients Chart
+    new Chart(document.getElementById('topIngredientsChart'), {
+        type: 'bar',
+        data: {
+            labels: topNames,
+            datasets: [{
+                label: 'Cantidad comprada',
+                data: topQuantities,
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Production Chart (Repollas y Cajas)
+    new Chart(document.getElementById('productionChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Repollas sueltas', 'Cajas (6 repollas c/u)'],
+            datasets: [{
+                data: [remainingRepollas, totalBoxes],
+                backgroundColor: ['#36A2EB', '#FF6384']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            if(context.label === 'Cajas (6 repollas c/u)') {
+                                return context.parsed + ' cajas = ' + (context.parsed * 6) + ' repollas';
+                            } else {
+                                return context.parsed + ' repollas sueltas';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Órdenes{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">🧾 Lista de Órdenes</h1>
+
+<a href="{% url 'order_create' %}" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+  ➕ Crear Nueva Orden
+</a>
+
+<table class="mt-6 w-full border-collapse border border-gray-200">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="border p-2">ID</th>
+      <th class="border p-2">Fecha</th>
+      <th class="border p-2">Total ($)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr class="text-center border-t hover:bg-gray-50">
+      <td class="text-center p-2">{{ order.id }}</td>
+      <td class="text-center p-2">{{ order.created_at|date:"Y-m-d" }}</td>
+      <td class="text-center p-2">{{ order.total }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4" class="p-4 text-center text-gray-500">No hay órdenes registradas.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

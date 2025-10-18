@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto mt-10">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Ingredient List</h1>
+    <a href="{% url 'ingredient_create' %}" 
+       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+       + Add Ingredient
+    </a>
+  </div>
+
+  <div class="overflow-x-auto bg-white rounded-lg shadow text-center">
+    <table class="min-w-full border border-gray-200">
+      <thead class="bg-gray-100 border-b">
+        <tr class="text-center">
+          <th class="text-center px-4 py-2 text-center">Name</th>
+          <th class="text-center px-4 py-2">Stock</th>
+          <th class="text-center px-4 py-2">Unit</th>
+          <th class="text-center px-4 py-2">Price</th>
+          <th class="text-center px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ingredient in ingredients %}
+        <tr class="border-b hover:bg-gray-50">
+          <td class="px-4 py-2">{{ ingredient.name }}</td>
+          <td class="px-4 py-2">{{ ingredient.stock }}</td>
+          <td class="px-4 py-2">{{ ingredient.measurament }}</td>
+          <td class="px-4 py-2">${{ ingredient.price_per_unit }}</td>
+          <td class="px-4 py-2 text-center">
+            <a href="{% url 'ingredient_update' ingredient.id %}" 
+               class="text-blue-600 hover:underline mr-2 border p-2 rounded bg-green-400/45">Edit</a>
+            <a href="{% url 'ingredient_delete' ingredient.id %}" 
+               class="text-red-600 hover:underline border p-2 rounded bg-red-400/45">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center py-4 text-gray-500">
+            No ingredients found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

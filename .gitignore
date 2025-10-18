@@ -1,0 +1,14 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+
+# Virtualenv
+virtualenviroment/
+
+# Entorno
+.env
+
+# Django
+db.sqlite3
+/staticfiles/

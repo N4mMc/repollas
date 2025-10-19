@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-smf!g-5m$gw$5doelou*m1zx4=c=!%ww94g!=lrs(7100hkutr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['repollas.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition

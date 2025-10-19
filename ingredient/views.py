@@ -7,7 +7,7 @@ from .services import update_ingredient, create_ingredient, get_all_ingredient, 
 from .models import Ingredient
 
 #API views
-class IngredientList(APIView):
+class IngredientList(APIView): 
 
     def get(self, request):
         try:

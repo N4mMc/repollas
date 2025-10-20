@@ -1,71 +1,109 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Crear Producción{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-6">🧾 Crear Nueva Producción</h1>
+<div class="p-8 min-h-screen bg-yellow-100 font-[Poppins,sans-serif]">
 
-<form method="post" class="bg-white p-6 rounded-2xl shadow-md space-y-4">
-  {% csrf_token %}
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md">
+      🧾 Crear Nueva Producción
+    </h1>
 
-  <div>
-    <label class="block font-semibold mb-2">Cantidad de Repollas:</label>
-    <input type="number" id="repollas" name="repollas" min="1" required class="border rounded-lg p-2 w-full">
+    <a href="{% url 'production_list' %}"
+       class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-200 flex items-center gap-2 font-semibold">
+      <i class="fa fa-arrow-left"></i> Volver a la Lista
+    </a>
   </div>
 
-  <div>
-    <label class="block font-semibold mb-2">Cajas (calculadas automáticamente):</label>
-    <input type="number" id="boxes" name="boxes" readonly class="border rounded-lg p-2 w-full bg-gray-100">
-  </div>
+  <!-- Formulario -->
+  <form method="post" class="bg-white p-8 rounded-2xl shadow-xl border-4 border-yellow-300 space-y-6">
+    {% csrf_token %}
 
-  <div>
-    <label class="block font-semibold mb-2">Ventas ($):</label>
-    <input type="number" name="sales" min="0" step="0.01" value="0" class="border rounded-lg p-2 w-full">
-  </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Repollas -->
+      <div>
+        <label class="block text-orange-700 font-semibold mb-2">Cantidad de Repollas</label>
+        <input type="number" id="repollas" name="repollas" min="1" required
+               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+      </div>
 
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-lg font-semibold">Ingredientes Usados</h2>
-    <button type="button" id="addRow" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
-      ➕ Agregar Ingrediente
-    </button>
-  </div>
+      <!-- Cajas -->
+      <div>
+        <label class="block text-orange-700 font-semibold mb-2">Cajas (automáticas)</label>
+        <input type="number" id="boxes" name="boxes" readonly
+               class="w-full p-3 border-2 border-yellow-200 rounded-xl bg-yellow-50 text-gray-600">
+      </div>
 
-  <table class="w-full border-collapse border border-gray-200" id="ingredientTable">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="border p-2">Ingrediente</th>
-        <th class="border p-2">Cantidad</th>
-        <th class="border p-2">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="p-2">
-          <select name="ingredient_id[]" class="border rounded-lg p-2 w-full" required>
-            <option value="">-- Selecciona Ingrediente --</option>
-            {% for ingredient in ingredients %}
-              <option value="{{ ingredient.id }}">{{ ingredient.name }} (Stock: {{ ingredient.stock }})</option>
-            {% endfor %}
-          </select>
-        </td>
-        <td class="p-2">
-          <input type="number" name="quantity[]" min="1" value="1" class="border rounded-lg p-2 w-full" required>
-        </td>
-        <td class="p-2 text-center">
-          <button type="button" class="removeRow bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <!-- Ventas -->
+      <div>
+        <label class="block text-orange-700 font-semibold mb-2">Ventas ($)</label>
+        <input type="number" name="sales" min="0" step="0.01" value="0"
+               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+      </div>
+    </div>
 
-  <div class="flex justify-end mt-4">
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-      💾 Guardar Producción
-    </button>
-  </div>
-</form>
+    <!-- Ingredientes -->
+    <div class="mt-10">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold text-orange-700 drop-shadow-sm">
+          🥕 Ingredientes Usados
+        </h2>
+        <button type="button" id="addRow"
+                class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-xl shadow-md transition duration-150 font-semibold">
+          ➕ Agregar Ingrediente
+        </button>
+      </div>
 
+      <div class="overflow-hidden rounded-2xl shadow-lg border-4 border-yellow-300 bg-white">
+        <table class="min-w-full text-base text-gray-700" id="ingredientTable">
+          <thead class="bg-yellow-200 uppercase text-sm font-bold border-b-2 border-yellow-400 text-brown-700">
+            <tr>
+              <th class="py-3 px-6 text-left">Ingrediente</th>
+              <th class="py-3 px-6 text-left">Cantidad</th>
+              <th class="py-3 px-6 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b hover:bg-yellow-50 transition duration-150">
+              <td class="py-3 px-6">
+                <select name="ingredient_id[]" required
+                        class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-orange-300">
+                  <option value="">-- Selecciona Ingrediente --</option>
+                  {% for ingredient in ingredients %}
+                    <option value="{{ ingredient.id }}">{{ ingredient.name }} (Stock: {{ ingredient.stock }})</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td class="py-3 px-6">
+                <input type="number" name="quantity[]" min="1" value="1" required
+                       class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-orange-300">
+              </td>
+              <td class="py-3 px-6 text-center">
+                <button type="button"
+                        class="removeRow bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg shadow-md transition duration-150">
+                  🗑️ Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="flex justify-end mt-8">
+      <button type="submit"
+              class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg font-semibold transition duration-150 flex items-center gap-2">
+        💾 Guardar Producción
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Script -->
 <script>
-  // Calcular cajas automáticamente
   const repollasInput = document.getElementById('repollas');
   const boxesInput = document.getElementById('boxes');
 
@@ -74,19 +112,16 @@
     boxesInput.value = Math.floor(repollas / 6);
   });
 
-  // Agregar fila de ingrediente
   document.getElementById('addRow').addEventListener('click', () => {
     const table = document.querySelector('#ingredientTable tbody');
     const newRow = table.rows[0].cloneNode(true);
 
-    // Limpiar valores
     newRow.querySelectorAll('input').forEach(input => input.value = '');
     newRow.querySelector('select').selectedIndex = 0;
 
     table.appendChild(newRow);
   });
 
-  // Eliminar fila
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('removeRow')) {
       const row = e.target.closest('tr');

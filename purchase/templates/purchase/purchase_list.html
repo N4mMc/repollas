@@ -1,38 +1,55 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="p-6">
-  <h1 class="text-2xl font-bold mb-4 text-gray-800">Purchases</h1>
+<div class="p-6 bg-gray-50 min-h-screen">
 
-  <div class="mb-4 flex justify-between">
-    <a href="{% url 'purchase_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">New Purchase</a>
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <img src="{% static 'images/logo redondo.png' %}" alt="Logo" class="h-12 w-12 rounded-full shadow-md">
+      <h1 class="text-3xl font-semibold text-gray-800 tracking-tight">Purchases</h1>
+    </div>
+    <a href="{% url 'purchase_create' %}" 
+       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md transition duration-200 flex items-center gap-2">
+       <i class="fa fa-plus"></i> New Purchase
+    </a>
   </div>
 
-  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
-    <thead>
-      <tr class="bg-gray-100 text-left text-gray-700 uppercase text-sm">
-        <th class="py-3 px-4 border-b">ID</th>
-        <th class="py-3 px-4 border-b">Date</th>
-        <th class="py-3 px-4 border-b">Total</th>
-        <th class="py-3 px-4 border-b text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for purchase in purchases %}
-      <tr class="hover:bg-gray-50">
-        <td class="py-3 px-4 border-b">{{ purchase.ingredient.name }}</td>
-        <td class="py-3 px-4 border-b">{{ purchase.date }}</td>
-        <td class="py-3 px-4 border-b">${{ purchase.cost }}</td>
-        <td class="py-3 px-4 border-b text-center">
-          <a href="{% url 'purchase_update' purchase.id %}" class="text-blue-600 hover:underline mr-2">Edit</a>
-          <a href="{% url 'purchase_delete' purchase.id %}" class="text-red-600 hover:underline">Delete</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5" class="text-center text-gray-500 py-4">No purchases found.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <!-- Tabla -->
+  <div class="overflow-hidden rounded-xl shadow bg-white">
+    <table class="min-w-full text-sm text-gray-700">
+      <thead class="bg-blue-50 text-gray-700 uppercase text-xs font-semibold border-b">
+        <tr>
+          <th class="py-3 px-6 text-left">Ingredient</th>
+          <th class="py-3 px-6 text-left">Date</th>
+          <th class="py-3 px-6 text-left">Total Cost</th>
+          <th class="py-3 px-6 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for purchase in purchases %}
+        <tr class="border-b hover:bg-blue-50 transition duration-150">
+          <td class="py-3 px-6">{{ purchase.ingredient.name }}</td>
+          <td class="py-3 px-6">{{ purchase.date|date:"M d, Y" }}</td>
+          <td class="py-3 px-6 font-medium text-green-600">${{ purchase.cost }}</td>
+          <td class="py-3 px-6 text-center">
+            <a href="{% url 'purchase_update' purchase.id %}" 
+               class="text-blue-600 hover:text-blue-800 font-medium mr-3">
+               <i class="fa fa-edit"></i> Edit
+            </a>
+            <a href="{% url 'purchase_delete' purchase.id %}" 
+               class="text-red-600 hover:text-red-800 font-medium">
+               <i class="fa fa-trash"></i> Delete
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center text-gray-500 py-6">No purchases found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
 </div>
 {% endblock %}

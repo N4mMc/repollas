@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,66 +8,64 @@
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+
   <!-- Heroicons -->
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 flex min-h-screen">
+
+<body class="bg-[#FFF9E5] text-gray-800 flex min-h-screen">
 
   <!-- ========== SIDEBAR ========== -->
-  <aside class="w-64 bg-white shadow-xl flex flex-col justify-between fixed h-screen transition-all duration-300">
+  <aside class="w-64 bg-gradient-to-b from-[#FFD65A] to-[#FEC86B] shadow-xl flex flex-col justify-between fixed h-screen rounded-r-3xl overflow-hidden transition-all duration-300">
     <div>
       <!-- LOGO -->
-      <div class="flex items-center justify-center h-16 border-b">
-        <h1 class="text-2xl font-bold text-green-600">Las Repollas del Abuelo</h1>
+      <div class="flex items-center justify-center border-b border-[#FEC86B] py-6 bg-[#FFF2C7]">
+        <img src="{% static 'img/logo.png' %}" alt="logo" class="h-40 w-40 object-contain">
       </div>
 
       <!-- MENÚ PRINCIPAL -->
       <nav class="mt-6">
         <ul class="space-y-1">
-
           <li>
-            <a href="/reports/"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/reports/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+            <a href="/" class="flex items-center gap-3 px-6 py-3 rounded-lg mx-3 
+              hover:bg-[#E94E1B]/10 hover:text-[#E94E1B] transition-all duration-200
+              {% if request.path == '/' %}bg-[#E94E1B]/10 text-[#E94E1B] font-semibold{% endif %}">
               <i data-feather="bar-chart-2" class="w-5 h-5"></i>
               <span>Dashboard</span>
             </a>
           </li>
 
           <li>
-            <a href="/order/"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/order/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+            <a href="/order/" class="flex items-center gap-3 px-6 py-3 rounded-lg mx-3 
+              hover:bg-[#E94E1B]/10 hover:text-[#E94E1B] transition-all duration-200
+              {% if request.path == '/order/' %}bg-[#E94E1B]/10 text-[#E94E1B] font-semibold{% endif %}">
               <i data-feather="shopping-cart" class="w-5 h-5"></i>
               <span>Órdenes</span>
             </a>
           </li>
 
           <li>
-            <a href="/purchase/"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/purchase/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
-              <i data-feather="package" class="w-5 h-5"></i>
-              <span>Compras</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="/production/"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/production' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+            <a href="/production/" class="flex items-center gap-3 px-6 py-3 rounded-lg mx-3 
+              hover:bg-[#E94E1B]/10 hover:text-[#E94E1B] transition-all duration-200
+              {% if request.path == '/production/' %}bg-[#E94E1B]/10 text-[#E94E1B] font-semibold{% endif %}">
               <i data-feather="activity" class="w-5 h-5"></i>
               <span>Producción</span>
             </a>
           </li>
 
           <li>
-            <a href="{% url 'item_used_list' %}"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/item_used/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
-              <i data-feather="layers" class="w-5 h-5"></i>
-              <span>Ingredientes Usados</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="/ingredient/"
-              class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 hover:text-green-700 transition-colors {% if request.path == '/ingredient/' %}bg-green-100 text-green-700 font-semibold{% endif %}">
+            <a href="/ingredient/" class="flex items-center gap-3 px-6 py-3 rounded-lg mx-3 
+              hover:bg-[#E94E1B]/10 hover:text-[#E94E1B] transition-all duration-200
+              {% if request.path == '/ingredient/' %}bg-[#E94E1B]/10 text-[#E94E1B] font-semibold{% endif %}">
               <i data-feather="droplet" class="w-5 h-5"></i>
               <span>Ingredientes</span>
             </a>
@@ -76,21 +75,20 @@
     </div>
 
     <!-- PIE DEL SIDEBAR -->
-    <div class="border-t px-6 py-4">
+    <div class="border-t border-[#FEC86B] px-6 py-4 bg-[#FFF2C7]">
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-600">Conectado como:</p>
-          <p class="font-semibold text-gray-800">Administrador</p>
+          <p class="font-semibold text-[#6B3E26]">Administrador</p>
         </div>
-        <i data-feather="user" class="w-6 h-6 text-gray-500"></i>
+        <i data-feather="user" class="w-6 h-6 text-[#6B3E26]"></i>
       </div>
     </div>
   </aside>
 
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
-  <main class="flex-1 ml-64 p-8">
-    {% block content %}
-    {% endblock %}
+  <main class="flex-1 ml-64 p-10 transition-all duration-300">
+    {% block content %}{% endblock %}
   </main>
 
   <!-- Inicializar íconos -->

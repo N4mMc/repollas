@@ -60,7 +60,7 @@ def production_create(request):
                     int(quantities[i]),
                     ingredient_ids[i]
                 )
-                items_used_list.append(item.id)
+                items_used_list.append(item)
         data = {
             'repollas': repollas,
             'boxes': boxes,

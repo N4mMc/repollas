@@ -1,43 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-5xl mx-auto mt-10">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Ingredient List</h1>
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-yellow-100 rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300">
+  
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-extrabold text-red-500 drop-shadow-sm font-[Poppins]">
+      🍯 Ingredient List
+    </h1>
     <a href="{% url 'ingredient_create' %}" 
-       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+       class="bg-orange-400 hover:bg-orange-500 text-white px-5 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105 font-semibold">
        + Add Ingredient
     </a>
   </div>
 
-  <div class="overflow-x-auto bg-white rounded-lg shadow text-center">
-    <table class="min-w-full border border-gray-200">
-      <thead class="bg-gray-100 border-b">
-        <tr class="text-center">
-          <th class="text-center px-4 py-2 text-center">Name</th>
-          <th class="text-center px-4 py-2">Stock</th>
-          <th class="text-center px-4 py-2">Unit</th>
-          <th class="text-center px-4 py-2">Price</th>
-          <th class="text-center px-4 py-2">Actions</th>
+  <!-- Tabla -->
+  <div class="overflow-x-auto bg-white rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300">
+    <table class="min-w-full border-separate border-spacing-y-2">
+      <thead class="bg-yellow-200/60 border-b-2 border-yellow-300">
+        <tr class="text-center text-red-600 font-semibold">
+          <th class="px-4 py-3 rounded-tl-3xl">Name</th>
+          <th class="px-4 py-3">Stock</th>
+          <th class="px-4 py-3">Unit</th>
+          <th class="px-4 py-3">Price</th>
+          <th class="px-4 py-3 rounded-tr-3xl">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for ingredient in ingredients %}
-        <tr class="border-b hover:bg-gray-50">
-          <td class="px-4 py-2">{{ ingredient.name }}</td>
-          <td class="px-4 py-2">{{ ingredient.stock }}</td>
-          <td class="px-4 py-2">{{ ingredient.measurament }}</td>
-          <td class="px-4 py-2">${{ ingredient.price_per_unit }}</td>
-          <td class="px-4 py-2 text-center">
+        <tr class="bg-yellow-50 hover:bg-yellow-100 transition rounded-2xl shadow-sm text-center">
+          <td class="px-4 py-3 font-medium text-gray-800">{{ ingredient.name }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ ingredient.stock }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ ingredient.measurament }}</td>
+          <td class="px-4 py-3 text-gray-800 font-semibold">${{ ingredient.price_per_unit }}</td>
+          <td class="px-4 py-3 text-center space-x-2">
             <a href="{% url 'ingredient_update' ingredient.id %}" 
-               class="text-blue-600 hover:underline mr-2 border p-2 rounded bg-green-400/45">Edit</a>
+               class="bg-green-400/80 hover:bg-green-500 text-white px-3 py-1.5 rounded-xl shadow transition transform hover:scale-105">
+              ✏️ Edit
+            </a>
             <a href="{% url 'ingredient_delete' ingredient.id %}" 
-               class="text-red-600 hover:underline border p-2 rounded bg-red-400/45">Delete</a>
+               class="bg-red-400/80 hover:bg-red-500 text-white px-3 py-1.5 rounded-xl shadow transition transform hover:scale-105">
+              🗑️ Delete
+            </a>
           </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="4" class="text-center py-4 text-gray-500">
-            No ingredients found.
+          <td colspan="5" class="text-center py-6 text-gray-500 font-medium">
+            No ingredients found 🍃
           </td>
         </tr>
         {% endfor %}

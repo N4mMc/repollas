@@ -7,10 +7,7 @@ def create_production(data):
         boxes=data.get("boxes", 0),
         sales=data.get("sales", 0)
     )
-    items_used_ids = data.get("items_used", [])
-    for item_id in items_used_ids:
-        item = get_item_used_by_id(item_id)
-        production.items_used.add(item)
+    production.item_used.set(data['item_used'])
     return production
 
 def get_all_productions():

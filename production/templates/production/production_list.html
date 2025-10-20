@@ -1,59 +1,87 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Lista de Producciones{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-6">🏭 Lista de Producciones</h1>
+<div class="p-8 min-h-screen bg-yellow-100 font-[Poppins,sans-serif]">
 
-<a href="{% url 'production_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-  ➕ Crear Nueva Producción
-</a>
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-4">
+      <h1 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md">
+        🏭 Lista de Producciones
+      </h1>
+    </div>
 
-<table class="mt-6 w-full border-collapse border border-gray-200">
-  <thead class="bg-gray-100">
-    <tr>
-      <th class="border p-2">ID</th>
-      <th class="border p-2">Repollas Producida</th>
-      <th class="border p-2">Cajas Producida</th>
-      <th class="border p-2">Fecha</th>
-      <th class="border p-2">Ingresos</th>
-    </tr>
-  </thead>
-  
-  <tbody>
-    {% for production in productions %}
-      <tr class="border-t hover:bg-gray-50 text-center" onclick="toggleDetails('{{ production.id }}')">
-        <td class="p-2">{{ production.id }}</td>
-        <td class="p-2">{{ production.repollas }}</td>
-        <td class="p-2">{{ production.boxes }}</td>
-        <td class="p-2">{{ production.created_at|date:"Y-m-d" }}</td>
-        <td class="p-2">{{ production.sales}}</td>
-      </tr>
+    <a href="{% url 'production_create' %}"
+       class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-200 font-semibold flex items-center gap-2">
+      ➕ Crear Nueva Producción
+    </a>
+  </div>
 
-      <tr id="details-{{ production.id }}" class="hidden bg-gray-50">
-        <td colspan="5" class="p-2">
-          <ul class="ml-4 list-disc text-center">
-            {% for item in production.item_used.all %}
-              <li>{{ item.ingredient.name }} - {{ item.quantity }}</li>
-            {% empty %}
-              <li>No se registraron ingredientes usados.</li>
-            {% endfor %}
-          </ul>
-        </td>
-      </tr>
+  <!-- Tabla -->
+  <div class="overflow-hidden rounded-2xl shadow-lg bg-white border-4 border-yellow-300">
+    <table class="min-w-full text-base text-gray-700">
+      <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+        <tr>
+          <th class="py-3 px-4 text-center">ID</th>
+          <th class="py-3 px-4 text-center">Repollas Producidas</th>
+          <th class="py-3 px-4 text-center">Cajas Producidas</th>
+          <th class="py-3 px-4 text-center">Fecha</th>
+          <th class="py-3 px-4 text-center">Ingresos ($)</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for production in productions %}
+          <tr class="border-b hover:bg-yellow-50 transition duration-150 cursor-pointer text-center" onclick="toggleDetails('{{ production.id }}')">
+            <td class="p-3 font-medium">{{ production.id }}</td>
+            <td class="p-3">{{ production.repollas }}</td>
+            <td class="p-3">{{ production.boxes }}</td>
+            <td class="p-3">{{ production.created_at|date:"Y-m-d" }}</td>
+            <td class="p-3 font-semibold text-green-700">${{ production.sales }}</td>
+          </tr>
 
-      {% empty %}
-      <tr>
-        <td colspan="4" class="p-4 text-center text-gray-500">No hay producciones registradas.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-</table>
+          <!-- Detalles de ingredientes -->
+          <tr id="details-{{ production.id }}" class="hidden bg-yellow-50 border-t border-yellow-200">
+            <td colspan="5" class="p-4 text-center">
+              <table class="min-w-full text-base text-gray-700">
+                <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+                  <tr>
+                    <th class="py-3 px-4 text-center">Ingrediente</th>
+                    <th class="py-3 px-4 text-center">Cantidad Usada</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in production.item_used.all %}
+                    <tr class="border-b hover:bg-yellow-50 transition duration-150 text-center">
+                      <td class="p-3 font-medium">{{ item.ingredient.name }}</td>
+                      <td class="p-3 font-semibold text-green-700">{{ item.quantity }}</td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="2" class="text-gray-500 py-3">No hay ingredientes registrados.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-center text-gray-500 py-8">No hay producciones registradas.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <script>
+  // 👉 Mostrar/ocultar detalles de producción
   function toggleDetails(id) {
     const row = document.getElementById(`details-${id}`);
     row.classList.toggle('hidden');
   }
 </script>
-
 {% endblock %}

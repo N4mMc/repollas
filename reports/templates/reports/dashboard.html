@@ -6,27 +6,115 @@
     </h1>
 
     <!-- ==== STATS CARDS ==== -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="p-6 bg-[#FFF2C7] rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Órdenes Totales</h3>
-            <p class="text-4xl font-extrabold text-[#E94E1B]">{{ total_orders }}</p>
-        </div>
-
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <!-- Compras Totales (dinero) -->
         <div class="p-6 bg-[#FFF2C7] rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Compras Totales</h3>
-            <p class="text-4xl font-extrabold text-[#A4C639]">${{ total_purchases.total_cost|floatformat:2|default:0 }}</p>
+            <p class="text-2xl font-extrabold text-[#E94E1B]">${{ total_purchases|floatformat:2 }}</p>
         </div>
 
+        <!-- Ventas Totales (cajas vendidas) -->
         <div class="p-6 bg-[#FFF2C7] rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Ventas Totales</h3>
-            <p class="text-4xl font-extrabold text-[#E94E1B]">${{ total_production.total_sales|floatformat:2|default:0 }}</p>
+            <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Ventas Totales (Cajas)</h3>
+            <p class="text-2xl font-extrabold text-[#A4C639]">{{ total_boxes|default:0 }}</p>
+        </div>
+
+        <!-- Producciones Totales -->
+        <div class="p-6 bg-[#FFF2C7] rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Producciones Totales</h3>
+            <p class="text-2xl font-extrabold text-[#6B3E26]">{{ production_count }}</p>
+        </div>
+
+        <!-- Ganancias Netas -->
+        <div class="p-6 bg-[#FFF2C7] rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <h3 class="text-lg font-semibold text-[#6B3E26] mb-2">Ganancias Netas</h3>
+            <p class="text-2xl font-extrabold text-[#6B3E26]">${{ net_profit|floatformat:2 }}</p>
         </div>
     </div>
 
-    <!-- ==== STOCK CHART ==== -->
+    <!-- ==== TABLAS DE STOCK POR MEDIDA ==== -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white p-6 rounded-2xl shadow-lg">
+            <h2 class="text-xl font-semibold text-[#6B3E26] mb-4">Gramos (g)</h2>
+            <table class="w-full text-left">
+                <thead>
+                    <tr><th class="py-2">Ingrediente</th><th class="py-2">Stock</th></tr>
+                </thead>
+                <tbody>
+                    {% for ing in stock_grams %}
+                    <tr class="border-t">
+                        <td class="py-2">{{ ing.name }}</td>
+                        <td class="py-2">{{ ing.stock }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2" class="py-2">No hay ingredientes en gramos</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-lg">
+            <h2 class="text-xl font-semibold text-[#6B3E26] mb-4">Mililitros (ml)</h2>
+            <table class="w-full text-left">
+                <thead>
+                    <tr><th class="py-2">Ingrediente</th><th class="py-2">Stock</th></tr>
+                </thead>
+                <tbody>
+                    {% for ing in stock_mls %}
+                    <tr class="border-t">
+                        <td class="py-2">{{ ing.name }}</td>
+                        <td class="py-2">{{ ing.stock }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2" class="py-2">No hay ingredientes en mililitros</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-lg">
+            <h2 class="text-xl font-semibold text-[#6B3E26] mb-4">Unidades (u)</h2>
+            <table class="w-full text-left">
+                <thead>
+                    <tr><th class="py-2">Ingrediente</th><th class="py-2">Stock</th></tr>
+                </thead>
+                <tbody>
+                    {% for ing in stock_units %}
+                    <tr class="border-t">
+                        <td class="py-2">{{ ing.name }}</td>
+                        <td class="py-2">{{ ing.stock }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2" class="py-2">No hay ingredientes en unidades</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ==== GRÁFICO VENTAS POR FECHA ==== -->
     <div class="bg-white p-6 rounded-2xl shadow-lg mb-10">
-        <h2 class="text-2xl font-semibold text-[#6B3E26] mb-4">🌿 Stock Actual por Ingrediente</h2>
-        <canvas id="stockChart"></canvas>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-semibold text-[#6B3E26]">📈 Ventas por Fecha</h2>
+            <div>
+                <span class="text-sm text-gray-600 mr-2">Periodo:</span>
+                <a href="?period=day"
+                   class="px-2 py-1 rounded {% if period == 'day' %}bg-[#FFD65A]{% else %}bg-gray-100{% endif %}">
+                   Día
+                </a>
+
+                <a href="?period=week"
+                   class="px-2 py-1 rounded {% if period == 'week' %}bg-[#FFD65A]{% else %}bg-gray-100{% endif %}">
+                   Semana
+                </a>
+
+                <a href="?period=month"
+                   class="px-2 py-1 rounded {% if period == 'month' %}bg-[#FFD65A]{% else %}bg-gray-100{% endif %}">
+                   Mes
+                </a>
+            </div>
+        </div>
+        <canvas id="salesChart" height="120"></canvas>
     </div>
 
     <!-- ==== TOP INGREDIENTS CHART ==== -->
@@ -37,58 +125,83 @@
 
 </div>
 
-<!-- Chart.js -->
+<!-- Chart.js via jsDelivr -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Datos desde Django
-    const ingredientNames = {{ ingredient_names|safe }};
-    const ingredientStocks = {{ ingredient_stocks|safe }};
+    // ===== Datos desde Django (JSON strings) =====
+    const salesLabels = {{ sales_labels|safe }};
+    const salesData = {{ sales_data|safe }};
+    const boxesData = {{ boxes_data|safe }};
+
     const topNames = {{ top_names|safe }};
     const topQuantities = {{ top_quantities|safe }};
-    const totalRepollasRaw = {{ total_production.total_repollas|default:0 }};
 
-    // Cálculo de cajas
-    const totalBoxes = Math.floor(totalRepollasRaw / 6);
-    const remainingRepollas = totalRepollasRaw % 6;
-
-    // ==== COLORES BASE ====
+    // Paleta
     const palette = {
-        yellow: '#FFD65A',
-        red: '#E94E1B',
-        green: '#A4C639',
         brown: '#6B3E26',
+        green: '#A4C639',
+        red: '#E94E1B',
+        yellow: '#FFD65A',
         orange: '#FFB347'
     };
 
-    // ==== STOCK CHART ====
-    new Chart(document.getElementById('stockChart'), {
-        type: 'bar',
+    // ===== Sales Chart (línea) =====
+    new Chart(document.getElementById('salesChart'), {
+        type: 'line',
         data: {
-            labels: ingredientNames,
-            datasets: [{
-                label: 'Stock disponible',
-                data: ingredientStocks,
-                backgroundColor: palette.orange + '90',
-                borderColor: palette.orange,
-                borderWidth: 1,
-                borderRadius: 8
-            }]
+            labels: salesLabels,
+            datasets: [
+                {
+                    label: 'Ventas (dinero)',
+                    data: salesData,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.2,
+                    borderColor: palette.green,
+                    backgroundColor: palette.green + '33',
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Cajas vendidas',
+                    data: boxesData,
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.2,
+                    borderColor: palette.orange,
+                    backgroundColor: palette.orange + '22',
+                    yAxisID: 'y2'
+                }
+            ]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: true, text: 'Stock Actual', color: palette.brown, font: { size: 16 } }
-            },
+            interaction: { mode: 'index', intersect: false },
             scales: {
                 x: { ticks: { color: palette.brown } },
-                y: { ticks: { color: palette.brown } }
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    ticks: { color: palette.brown },
+                    title: { display: true, text: 'Dinero (moneda)', color: palette.brown }
+                },
+                y2: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    ticks: { color: palette.brown },
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: 'Cajas', color: palette.brown }
+                }
+            },
+            plugins: {
+                legend: { position: 'top' }
             }
         }
     });
 
-    // ==== TOP INGREDIENTS CHART ====
+    // ===== Top Ingredients Chart (bar) =====
     new Chart(document.getElementById('topIngredientsChart'), {
         type: 'bar',
         data: {
@@ -96,17 +209,16 @@
             datasets: [{
                 label: 'Cantidad comprada',
                 data: topQuantities,
-                backgroundColor: palette.green + '80',
-                borderColor: palette.green,
+                backgroundColor: palette.yellow + 'CC',
+                borderColor: palette.brown,
                 borderWidth: 1,
-                borderRadius: 8
+                borderRadius: 6
             }]
         },
         options: {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: 'Top Ingredientes', color: palette.brown, font: { size: 16 } }
             },
             scales: {
                 x: { ticks: { color: palette.brown } },
@@ -114,6 +226,5 @@
             }
         }
     });
-
 </script>
 {% endblock %}

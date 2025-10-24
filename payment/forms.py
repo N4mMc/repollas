@@ -6,6 +6,13 @@ class PaymentForm(forms.ModelForm):
         model = Payment
         fields = ['amount', 'description']
         widgets = {
-            'amount': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01'}),
-            'description': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Payment Description'}),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-input',
+                'step': '0.01',
+                'placeholder': 'Enter amount'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-input',
+                'placeholder': 'Payment description'
+            }),
         }

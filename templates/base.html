@@ -25,10 +25,10 @@
 <body class="bg-[#FFF9E5] text-gray-800 flex min-h-screen overflow-x-hidden">
 
   <!-- ====== MOBILE NAVBAR ====== -->
-  <header class="lg:hidden fixed top-0 left-0 w-full bg-[#FFD65A] flex items-center justify-between px-4 py-3 shadow-md z-50">
+  <header class="lg:hidden fixed top-0 left-0 w-full bg-[#FFD65A] flex items-center justify-between px-4 py-3 shadow-md z-[60]">
     <div class="flex items-center gap-3">
       <img src="https://res.cloudinary.com/dkwpozl38/image/upload/v1760979778/logo_redondo_mhc6me.png" alt="logo" class="h-10 w-10 object-contain">
-      <h1 class="font-semibold text-[#6B3E26] text-lg">Panel</h1>
+      <h1 class="font-semibold text-[#6B3E26] text-lg">Dashboard</h1>
     </div>
     <button id="menu-toggle" class="text-[#6B3E26] focus:outline-none">
       <i data-feather="menu" class="w-6 h-6"></i>
@@ -37,8 +37,9 @@
 
   <!-- ====== SIDEBAR ====== -->
   <aside id="sidebar"
-    class="w-64 bg-gradient-to-b from-[#FFD65A] to-[#FEC86B] shadow-xl flex flex-col justify-between fixed h-screen rounded-r-3xl overflow-hidden transition-transform duration-300 z-40
-           transform -translate-x-full lg:translate-x-0">
+    class="fixed top-0 left-0 w-64 h-full bg-gradient-to-b from-[#FFD65A] to-[#FEC86B] shadow-xl flex flex-col justify-between rounded-r-3xl overflow-hidden 
+           transform -translate-x-full transition-transform duration-300 z-[50]
+           lg:translate-x-0 lg:z-[40]">
     <div>
       <!-- LOGO -->
       <div class="flex items-center justify-center border-b border-[#FEC86B] py-6 bg-[#FFF2C7]">
@@ -109,10 +110,10 @@
   </aside>
 
   <!-- ====== OVERLAY PARA MOBILE ====== -->
-  <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-30 lg:hidden"></div>
+  <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-[45] lg:hidden"></div>
 
   <!-- ====== CONTENIDO PRINCIPAL ====== -->
-  <main class="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 w-full lg:ml-64 mt-16 lg:mt-0">
+  <main class="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 w-full lg:ml-64 mt-16 lg:mt-0 relative z-[30]">
     {% block content %}{% endblock %}
   </main>
 
@@ -125,13 +126,16 @@
     const overlay = document.getElementById("overlay");
 
     toggleBtn?.addEventListener("click", () => {
-      sidebar.classList.toggle("-translate-x-full");
-      overlay.classList.toggle("hidden");
+      const isHidden = sidebar.classList.contains("-translate-x-full");
+      sidebar.classList.toggle("-translate-x-full", !isHidden);
+      overlay.classList.toggle("hidden", !isHidden);
+      document.body.classList.toggle("overflow-hidden", isHidden); // Evita desplazamiento del fondo
     });
 
     overlay?.addEventListener("click", () => {
       sidebar.classList.add("-translate-x-full");
       overlay.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
     });
   </script>
 </body>

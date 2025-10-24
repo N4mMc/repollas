@@ -2,13 +2,13 @@
 {% block title %}{% if form.instance.id %}Editar Ingrediente{% else %}Agregar Ingrediente{% endif %}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-yellow-100 p-10 font-[Poppins,sans-serif] flex justify-center items-start">
+<div class="min-h-screen bg-yellow-100 flex justify-center items-center py-10 px-5 font-[Poppins,sans-serif]">
 
   <!-- === FORM CARD === -->
-  <div class="w-full max-w-lg bg-white rounded-3xl shadow-xl border-4 border-yellow-300 p-10">
+  <div class="w-full max-w-2xl bg-white rounded-3xl shadow-xl border-4 border-yellow-300 p-8 sm:p-10">
 
     <!-- === TITLE === -->
-    <h1 class="text-4xl font-extrabold text-red-600 text-center mb-10 drop-shadow-md flex items-center justify-center gap-2">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600 text-center mb-8 sm:mb-10 drop-shadow-md flex items-center justify-center gap-2">
       {% if form.instance.id %}✏️ Editar Ingrediente{% else %}🍯 Agregar Ingrediente{% endif %}
     </h1>
 
@@ -16,19 +16,19 @@
     <form method="post" class="space-y-6">
       {% csrf_token %}
       
-      <div class="space-y-4">
+      <div class="space-y-5">
         {{ form.as_p }}
       </div>
 
       <!-- === ACTION BUTTONS === -->
-      <div class="flex justify-between items-center mt-8">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8">
         <a href="{% url 'ingredient_list' %}" 
-           class="text-red-500 font-semibold hover:text-red-600 transition transform hover:scale-105 flex items-center gap-1">
+           class="text-red-500 font-semibold hover:text-red-600 transition transform hover:scale-105 flex items-center gap-1 text-base sm:text-lg">
           ← Volver a la lista
         </a>
 
         <button type="submit"
-                class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105 flex items-center gap-2">
+                class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-md transition transform hover:scale-105 flex justify-center items-center gap-2 text-base sm:text-lg">
           💾 Guardar
         </button>
       </div>

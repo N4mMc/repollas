@@ -2,39 +2,39 @@
 {% block title %}Crear Orden{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-yellow-100 p-10 font-[Poppins,sans-serif]">
+<div class="min-h-screen bg-yellow-100 p-6 sm:p-10 font-[Poppins,sans-serif]">
 
   <!-- === HEADER === -->
-  <div class="flex items-center justify-between mb-10">
-    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight flex items-center gap-3 drop-shadow-md">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-5 mb-10 text-center sm:text-left">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600 tracking-tight flex items-center gap-3 drop-shadow-md">
       🛒 Crear Nueva Orden de Insumos
     </h1>
     <a href="{% url 'order_list' %}" 
-       class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-5 py-2 rounded-xl font-semibold shadow-md transition duration-200 flex items-center gap-2">
+       class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 sm:px-5 py-2 rounded-xl font-semibold shadow-md transition duration-200 flex items-center justify-center gap-2">
       ← Volver a la Lista
     </a>
   </div>
 
   <!-- === FORM === -->
   <form method="post" id="orderForm"
-        class="bg-white p-10 rounded-3xl shadow-2xl border-4 border-yellow-300 space-y-6 transition-all duration-300">
+        class="bg-white p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-yellow-300 space-y-6 transition-all duration-300">
     {% csrf_token %}
 
     <!-- === SUBHEADER === -->
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-bold text-orange-600 flex items-center gap-2">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+      <h2 class="text-xl sm:text-2xl font-bold text-orange-600 flex items-center gap-2">
         🥣 Ingredientes
       </h2>
       <button type="button" id="addRow"
-              class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl shadow-md transition-all duration-200 font-semibold flex items-center gap-2">
+              class="bg-red-500 hover:bg-red-600 text-white px-4 sm:px-5 py-2 rounded-xl shadow-md transition-all duration-200 font-semibold flex items-center gap-2 w-full sm:w-auto justify-center">
         ➕ Agregar Ingrediente
       </button>
     </div>
 
     <!-- === INGREDIENTS TABLE === -->
-    <div class="overflow-hidden rounded-2xl border-2 border-yellow-300 shadow-inner bg-yellow-50">
-      <table class="w-full text-base text-gray-700" id="ingredientTable">
-        <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+    <div class="overflow-x-auto rounded-2xl border-2 border-yellow-300 shadow-inner bg-yellow-50">
+      <table class="w-full min-w-[600px] text-sm sm:text-base text-gray-700" id="ingredientTable">
+        <thead class="bg-yellow-200 text-gray-800 uppercase text-xs sm:text-sm font-bold border-b-2 border-yellow-400">
           <tr>
             <th class="py-3 px-4 text-left">Ingrediente</th>
             <th class="py-3 px-4 text-left">Cantidad</th>
@@ -46,7 +46,7 @@
           <tr class="bg-white hover:bg-yellow-100 transition duration-150">
             <td class="p-3">
               <select name="ingredient_id[]" 
-                      class="border-2 border-yellow-300 rounded-xl p-2 w-full bg-white focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                      class="border-2 border-yellow-300 rounded-xl p-2 w-full bg-white focus:ring-2 focus:ring-orange-400 focus:outline-none text-sm sm:text-base">
                 <option value="">-- Selecciona --</option>
                 {% for ingredient in ingredients %}
                   <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
@@ -55,11 +55,11 @@
             </td>
             <td class="p-3">
               <input type="number" name="quantity[]" min="1" value="1"
-                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none text-sm sm:text-base">
             </td>
             <td class="p-3">
               <input type="number" name="cost[]" min="0" step="0.01"
-                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none text-sm sm:text-base">
             </td>
             <td class="p-3 text-center">
               <button type="button"
@@ -73,9 +73,9 @@
     </div>
 
     <!-- === SUBMIT BUTTON === -->
-    <div class="flex justify-end mt-8">
+    <div class="flex flex-col sm:flex-row justify-end mt-8">
       <button type="submit"
-              class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-2xl shadow-lg font-bold text-lg transition-all duration-200">
+              class="bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 rounded-2xl shadow-lg font-bold text-lg transition-all duration-200 w-full sm:w-auto">
         💾 Guardar Orden
       </button>
     </div>

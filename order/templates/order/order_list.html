@@ -3,45 +3,46 @@
 {% block title %}Lista de Órdenes{% endblock %}
 
 {% block content %}
-<div class="p-8 min-h-screen bg-yellow-100 font-[Poppins,sans-serif]">
+<div class="p-6 sm:p-8 min-h-screen bg-yellow-100 font-[Poppins,sans-serif]">
 
-  <!-- ENCABEZADO -->
-  <div class="flex items-center justify-between mb-10">
-    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md flex items-center gap-2">
+  <!-- === HEADER === -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-5 mb-10 text-center sm:text-left">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md flex items-center gap-2">
       🧾 Lista de Órdenes
     </h1>
 
     <a href="{% url 'order_create' %}"
-       class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-2xl shadow-lg transition-all duration-200 font-semibold flex items-center gap-2">
+       class="bg-red-500 hover:bg-red-600 text-white px-5 sm:px-6 py-3 rounded-2xl shadow-lg transition-all duration-200 font-semibold flex items-center justify-center gap-2 w-full sm:w-auto">
       ➕ Crear Nueva Orden
     </a>
   </div>
 
-  <!-- TABLA DE ÓRDENES -->
-  <div class="overflow-hidden rounded-3xl shadow-lg bg-white border-4 border-yellow-300">
-    <table class="min-w-full text-base text-gray-700">
-      <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+  <!-- === TABLE WRAPPER === -->
+  <div class="overflow-x-auto rounded-3xl shadow-lg bg-white border-4 border-yellow-300">
+    <table class="w-full min-w-[600px] text-sm sm:text-base text-gray-700">
+      <thead class="bg-yellow-200 text-gray-800 uppercase text-xs sm:text-sm font-bold border-b-2 border-yellow-400">
         <tr>
-          <th class="py-4 px-6 text-center">ID</th>
-          <th class="py-4 px-6 text-center">Fecha</th>
-          <th class="py-4 px-6 text-center">Total ($)</th>
+          <th class="py-3 sm:py-4 px-4 sm:px-6 text-center">ID</th>
+          <th class="py-3 sm:py-4 px-4 sm:px-6 text-center">Fecha</th>
+          <th class="py-3 sm:py-4 px-4 sm:px-6 text-center">Total ($)</th>
         </tr>
       </thead>
 
       <tbody>
         {% for order in orders %}
+        <!-- FILA PRINCIPAL -->
         <tr class="border-b hover:bg-yellow-50 transition duration-150 text-center cursor-pointer"
             onclick="toggleDetails('{{ order.id }}')">
-          <td class="py-3 px-6 font-medium">{{ order.id }}</td>
-          <td class="py-3 px-6">{{ order.created_at|date:"M d, Y" }}</td>
-          <td class="py-3 px-6 font-semibold text-green-700">${{ order.total }}</td>
+          <td class="py-3 px-4 sm:px-6 font-medium">{{ order.id }}</td>
+          <td class="py-3 px-4 sm:px-6">{{ order.created_at|date:'M d, Y' }}</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold text-green-700">${{ order.total }}</td>
         </tr>
 
         <!-- DETALLES DE LA ORDEN -->
-        <tr id="details-{{ order.id }}" class="hidden bg-yellow-50 border-t border-yellow-200">
+        <tr id="details-{{ order.id }}" class="hidden bg-yellow-50 border-t border-yellow-200 transition-all duration-300">
           <td colspan="3" class="p-4 text-center">
-            <div class="overflow-hidden rounded-2xl border border-yellow-200 shadow-inner bg-white">
-              <table class="min-w-full text-sm text-gray-700">
+            <div class="overflow-x-auto rounded-2xl border border-yellow-200 shadow-inner bg-white">
+              <table class="w-full min-w-[400px] text-xs sm:text-sm text-gray-700">
                 <thead class="bg-yellow-100 uppercase font-bold text-gray-800">
                   <tr>
                     <th class="py-2 px-4 text-center">Ingrediente</th>
@@ -52,7 +53,7 @@
                 <tbody>
                   {% for item in order.purchases.all %}
                     <tr class="border-b hover:bg-yellow-50 text-center transition">
-                      <td class="p-3 font-medium">{{ item.ingredient.name }}</td>
+                      <td class="p-3 font-medium break-words">{{ item.ingredient.name }}</td>
                       <td class="p-3">{{ item.quantity }} {{ item.ingredient.measurament }}</td>
                       <td class="p-3 font-semibold text-orange-600">${{ item.cost }}</td>
                     </tr>
@@ -78,7 +79,7 @@
   </div>
 </div>
 
-<!-- SCRIPT -->
+<!-- === SCRIPT === -->
 <script>
   // Alternar detalles de cada orden
   function toggleDetails(id) {

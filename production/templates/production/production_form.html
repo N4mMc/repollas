@@ -3,86 +3,88 @@
 {% block title %}Crear Producción{% endblock %}
 
 {% block content %}
-<div class="p-8 min-h-screen bg-yellow-100 font-[Poppins,sans-serif]">
+<div class="p-6 sm:p-8 min-h-screen bg-[#FFF9E5] font-[Poppins,sans-serif]">
 
-  <!-- Encabezado -->
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md">
+  <!-- === ENCABEZADO === -->
+  <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[#E94E1B] tracking-tight drop-shadow-md text-center sm:text-left">
       🧾 Crear Nueva Producción
     </h1>
 
     <a href="{% url 'production_list' %}"
-       class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-200 flex items-center gap-2 font-semibold">
+       class="bg-green-500 hover:bg-green-600 text-white px-5 sm:px-6 py-3 rounded-2xl shadow-lg transition-all duration-200 flex items-center justify-center gap-2 font-semibold w-full sm:w-auto">
       <i class="fa fa-arrow-left"></i> Volver a la Lista
     </a>
   </div>
 
-  <!-- Formulario -->
-  <form method="post" class="bg-white p-8 rounded-2xl shadow-xl border-4 border-yellow-300 space-y-6">
+  <!-- === FORMULARIO === -->
+  <form method="post" class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border-4 border-yellow-300 space-y-6 transition-all duration-300 hover:shadow-2xl">
     {% csrf_token %}
 
-    <div class="grid md:grid-cols-3 gap-6">
+    <!-- GRID PRINCIPAL -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Repollas -->
       <div>
-        <label class="block text-orange-700 font-semibold mb-2">Cantidad de Repollas</label>
+        <label class="block text-[#E67E22] font-semibold mb-2 text-sm sm:text-base">Cantidad de Repollas</label>
         <input type="number" id="repollas" name="repollas" min="1" required
-               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-[#E67E22] focus:outline-none">
       </div>
 
       <!-- Cajas -->
       <div>
-        <label class="block text-orange-700 font-semibold mb-2">Cajas (automáticas)</label>
+        <label class="block text-[#E67E22] font-semibold mb-2 text-sm sm:text-base">Cajas (automáticas)</label>
         <input type="number" id="boxes" name="boxes" readonly
                class="w-full p-3 border-2 border-yellow-200 rounded-xl bg-yellow-50 text-gray-600">
       </div>
 
       <!-- Ventas -->
       <div>
-        <label class="block text-orange-700 font-semibold mb-2">Ventas ($)</label>
+        <label class="block text-[#E67E22] font-semibold mb-2 text-sm sm:text-base">Ventas ($)</label>
         <input type="number" name="sales" min="0" step="0.01" value="0"
-               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:outline-none">
+               class="w-full p-3 border-2 border-yellow-300 rounded-xl focus:ring-2 focus:ring-[#E67E22] focus:outline-none">
       </div>
     </div>
 
-    <!-- Ingredientes -->
+    <!-- === INGREDIENTES === -->
     <div class="mt-10">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl font-bold text-orange-700 drop-shadow-sm">
+      <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3">
+        <h2 class="text-xl sm:text-2xl font-bold text-[#E67E22] drop-shadow-sm text-center sm:text-left">
           🥕 Ingredientes Usados
         </h2>
         <button type="button" id="addRow"
-                class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-xl shadow-md transition duration-150 font-semibold">
+                class="bg-[#E67E22] hover:bg-[#cf6d1b] text-white px-5 py-2.5 rounded-xl shadow-md transition duration-150 font-semibold w-full sm:w-auto">
           ➕ Agregar Ingrediente
         </button>
       </div>
 
-      <div class="overflow-hidden rounded-2xl shadow-lg border-4 border-yellow-300 bg-white">
-        <table class="min-w-full text-base text-gray-700" id="ingredientTable">
-          <thead class="bg-yellow-200 uppercase text-sm font-bold border-b-2 border-yellow-400 text-brown-700">
+      <!-- TABLA RESPONSIVE -->
+      <div class="overflow-x-auto rounded-2xl shadow-lg border-4 border-yellow-300 bg-white">
+        <table class="min-w-full text-sm sm:text-base text-gray-700" id="ingredientTable">
+          <thead class="bg-yellow-200 uppercase text-xs sm:text-sm font-bold border-b-2 border-yellow-400 text-[#6B3E26]">
             <tr>
-              <th class="py-3 px-6 text-left">Ingrediente</th>
-              <th class="py-3 px-6 text-left">Cantidad</th>
-              <th class="py-3 px-6 text-center">Acciones</th>
+              <th class="py-3 px-4 sm:px-6 text-left">Ingrediente</th>
+              <th class="py-3 px-4 sm:px-6 text-left">Cantidad</th>
+              <th class="py-3 px-4 sm:px-6 text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr class="border-b hover:bg-yellow-50 transition duration-150">
-              <td class="py-3 px-6">
+              <td class="py-3 px-4 sm:px-6">
                 <select name="ingredient_id[]" required
-                        class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-orange-300">
+                        class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-[#E67E22] focus:outline-none text-sm sm:text-base">
                   <option value="">-- Selecciona Ingrediente --</option>
                   {% for ingredient in ingredients %}
                     <option value="{{ ingredient.id }}">{{ ingredient.name }} (Stock: {{ ingredient.stock }})</option>
                   {% endfor %}
                 </select>
               </td>
-              <td class="py-3 px-6">
+              <td class="py-3 px-4 sm:px-6">
                 <input type="number" name="quantity[]" min="1" value="1" required
-                       class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-orange-300">
+                       class="w-full p-2 border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-[#E67E22] focus:outline-none text-sm sm:text-base">
               </td>
-              <td class="py-3 px-6 text-center">
+              <td class="py-3 px-4 sm:px-6 text-center">
                 <button type="button"
-                        class="removeRow bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg shadow-md transition duration-150">
+                        class="removeRow bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg shadow-md transition duration-150 text-sm sm:text-base">
                   🗑️ Eliminar
                 </button>
               </td>
@@ -92,17 +94,17 @@
       </div>
     </div>
 
-    <!-- Botón de envío -->
+    <!-- === BOTÓN DE ENVÍO === -->
     <div class="flex justify-end mt-8">
       <button type="submit"
-              class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg font-semibold transition duration-150 flex items-center gap-2">
+              class="bg-[#E94E1B] hover:bg-[#d8430f] text-white px-6 py-3 rounded-2xl shadow-lg font-semibold transition duration-150 flex items-center gap-2 focus:ring-4 focus:ring-[#E67E22]/30 focus:outline-none">
         💾 Guardar Producción
       </button>
     </div>
   </form>
 </div>
 
-<!-- Script -->
+<!-- === SCRIPT === -->
 <script>
   const repollasInput = document.getElementById('repollas');
   const boxesInput = document.getElementById('boxes');
@@ -115,10 +117,8 @@
   document.getElementById('addRow').addEventListener('click', () => {
     const table = document.querySelector('#ingredientTable tbody');
     const newRow = table.rows[0].cloneNode(true);
-
     newRow.querySelectorAll('input').forEach(input => input.value = '');
     newRow.querySelector('select').selectedIndex = 0;
-
     table.appendChild(newRow);
   });
 
@@ -126,9 +126,7 @@
     if (e.target.classList.contains('removeRow')) {
       const row = e.target.closest('tr');
       const table = document.querySelector('#ingredientTable tbody');
-      if (table.rows.length > 1) {
-        row.remove();
-      }
+      if (table.rows.length > 1) row.remove();
     }
   });
 </script>

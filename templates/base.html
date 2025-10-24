@@ -22,14 +22,27 @@
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
 
-<body class="bg-[#FFF9E5] text-gray-800 flex min-h-screen">
+<body class="bg-[#FFF9E5] text-gray-800 flex min-h-screen overflow-x-hidden">
 
-  <!-- ========== SIDEBAR ========== -->
-  <aside class="w-64 bg-gradient-to-b from-[#FFD65A] to-[#FEC86B] shadow-xl flex flex-col justify-between fixed h-screen rounded-r-3xl overflow-hidden transition-all duration-300">
+  <!-- ====== MOBILE NAVBAR ====== -->
+  <header class="lg:hidden fixed top-0 left-0 w-full bg-[#FFD65A] flex items-center justify-between px-4 py-3 shadow-md z-50">
+    <div class="flex items-center gap-3">
+      <img src="https://res.cloudinary.com/dkwpozl38/image/upload/v1760979778/logo_redondo_mhc6me.png" alt="logo" class="h-10 w-10 object-contain">
+      <h1 class="font-semibold text-[#6B3E26] text-lg">Panel</h1>
+    </div>
+    <button id="menu-toggle" class="text-[#6B3E26] focus:outline-none">
+      <i data-feather="menu" class="w-6 h-6"></i>
+    </button>
+  </header>
+
+  <!-- ====== SIDEBAR ====== -->
+  <aside id="sidebar"
+    class="w-64 bg-gradient-to-b from-[#FFD65A] to-[#FEC86B] shadow-xl flex flex-col justify-between fixed h-screen rounded-r-3xl overflow-hidden transition-transform duration-300 z-40
+           transform -translate-x-full lg:translate-x-0">
     <div>
       <!-- LOGO -->
       <div class="flex items-center justify-center border-b border-[#FEC86B] py-6 bg-[#FFF2C7]">
-        <img src="https://res.cloudinary.com/dkwpozl38/image/upload/v1760979778/logo_redondo_mhc6me.png" alt="logo" class="h-40 w-40 object-contain">
+        <img src="https://res.cloudinary.com/dkwpozl38/image/upload/v1760979778/logo_redondo_mhc6me.png" alt="logo" class="h-32 sm:h-36 object-contain">
       </div>
 
       <!-- MENÚ PRINCIPAL -->
@@ -70,6 +83,15 @@
               <span>Ingredientes</span>
             </a>
           </li>
+
+          <li>
+            <a href="/payment/" class="flex items-center gap-3 px-6 py-3 rounded-lg mx-3 
+              hover:bg-[#E94E1B]/10 hover:text-[#E94E1B] transition-all duration-200
+              {% if request.path == '/payment/' %}bg-[#E94E1B]/10 text-[#E94E1B] font-semibold{% endif %}">
+              <i data-feather="dollar-sign" class="w-5 h-5"></i>
+              <span>Payment</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -86,14 +108,31 @@
     </div>
   </aside>
 
-  <!-- ========== CONTENIDO PRINCIPAL ========== -->
-  <main class="flex-1 ml-64 p-10 transition-all duration-300">
+  <!-- ====== OVERLAY PARA MOBILE ====== -->
+  <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-30 lg:hidden"></div>
+
+  <!-- ====== CONTENIDO PRINCIPAL ====== -->
+  <main class="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 w-full lg:ml-64 mt-16 lg:mt-0">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Inicializar íconos -->
+  <!-- ====== JS: ICONOS Y SIDEBAR ====== -->
   <script>
     feather.replace();
+
+    const toggleBtn = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    toggleBtn?.addEventListener("click", () => {
+      sidebar.classList.toggle("-translate-x-full");
+      overlay.classList.toggle("hidden");
+    });
+
+    overlay?.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+    });
   </script>
 </body>
 </html>

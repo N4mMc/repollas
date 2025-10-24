@@ -49,7 +49,7 @@ from .forms import IngredientForm
 
 # Lista de ingredientes
 def ingredient_list(request):
-    ingredients = Ingredient.objects.all()
+    ingredients = get_all_ingredient()
     return render(request, 'ingredient/ingredient_list.html', {'ingredients': ingredients})
 
 # Crear ingrediente

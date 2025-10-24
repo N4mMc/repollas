@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto mt-24 p-10 bg-yellow-100 rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300 font-[Poppins]">
+
+  <!-- ENCABEZADO -->
+  <div class="flex justify-between items-center mb-10">
+    <h1 class="text-4xl font-extrabold text-red-600 drop-shadow-md flex items-center gap-2">
+      💰 Payments List
+    </h1>
+    <a href="{% url 'payment_create' %}" 
+       class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-2xl shadow-md transition transform hover:scale-105 font-semibold flex items-center gap-2">
+      ➕ Register Payment
+    </a>
+  </div>
+
+  <!-- TABLA DE PAGOS -->
+  <div class="overflow-hidden rounded-3xl shadow-lg bg-white border-4 border-yellow-300">
+    <table class="min-w-full text-base text-gray-700">
+      <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+        <tr>
+          <th class="py-3 px-4 text-center">Amount ($)</th>
+          <th class="py-3 px-4 text-center">Date</th>
+          <th class="py-3 px-4 text-center">Details</th>
+          <th class="py-3 px-4 text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for payment in payments %}
+          <tr class="border-b hover:bg-yellow-50 transition duration-150 cursor-pointer text-center">
+            <td class="p-3 font-semibold text-green-700">${{ payment.amount }}</td>
+            <td class="p-3">{{ payment.created_at|date:"Y-m-d" }}</td>
+            <td class="p-3 text-gray-700">{{ payment.description }}</td>
+            <td class="p-3 text-center text-gray-400 italic">—</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-gray-500 py-8">No payments recorded yet 🍃</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,52 +1,54 @@
 {% extends "base.html" %}
+{% block title %}Lista de Ingredientes{% endblock %}
+
 {% block content %}
-<div class="max-w-5xl mx-auto mt-10 p-6 bg-yellow-100 rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300">
-  
-  <!-- Encabezado -->
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-extrabold text-red-500 drop-shadow-sm font-[Poppins]">
-      🍯 Ingredient List
+<div class="min-h-screen bg-yellow-100 p-10 font-[Poppins,sans-serif]">
+
+  <!-- === HEADER === -->
+  <div class="flex justify-between items-center mb-10">
+    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight flex items-center gap-3 drop-shadow-md">
+      🍯 Lista de Ingredientes
     </h1>
     <a href="{% url 'ingredient_create' %}" 
-       class="bg-orange-400 hover:bg-orange-500 text-white px-5 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105 font-semibold">
-       + Add Ingredient
+       class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-200 flex items-center gap-2 font-semibold">
+      ➕ Agregar Ingrediente
     </a>
   </div>
 
-  <!-- Tabla -->
-  <div class="overflow-x-auto bg-white rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300">
-    <table class="min-w-full border-separate border-spacing-y-2">
-      <thead class="bg-yellow-200/60 border-b-2 border-yellow-300">
-        <tr class="text-center text-red-600 font-semibold">
-          <th class="px-4 py-3 rounded-tl-3xl">Name</th>
-          <th class="px-4 py-3">Stock</th>
-          <th class="px-4 py-3">Unit</th>
-          <th class="px-4 py-3">Price</th>
-          <th class="px-4 py-3 rounded-tr-3xl">Actions</th>
+  <!-- === TABLE CONTAINER === -->
+  <div class="overflow-hidden rounded-3xl shadow-xl border-4 border-yellow-300 bg-white">
+    <table class="min-w-full text-base text-gray-700">
+      <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
+        <tr class="text-center">
+          <th class="py-4 px-6 text-left">Nombre</th>
+          <th class="py-4 px-6 text-center">Stock</th>
+          <th class="py-4 px-6 text-center">Unidad</th>
+          <th class="py-4 px-6 text-center">Precio ($)</th>
+          <th class="py-4 px-6 text-center">Acciones</th>
         </tr>
       </thead>
       <tbody>
         {% for ingredient in ingredients %}
-        <tr class="bg-yellow-50 hover:bg-yellow-100 transition rounded-2xl shadow-sm text-center">
-          <td class="px-4 py-3 font-medium text-gray-800">{{ ingredient.name }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ ingredient.stock }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ ingredient.measurament }}</td>
-          <td class="px-4 py-3 text-gray-800 font-semibold">${{ ingredient.price_per_unit }}</td>
-          <td class="px-4 py-3 text-center space-x-2">
+        <tr class="border-b hover:bg-yellow-50 transition duration-150 text-center">
+          <td class="py-3 px-6 font-medium text-gray-800 text-left">{{ ingredient.name }}</td>
+          <td class="py-3 px-6 text-gray-700">{{ ingredient.stock }}</td>
+          <td class="py-3 px-6 text-gray-700">{{ ingredient.measurament }}</td>
+          <td class="py-3 px-6 font-semibold text-yellow-600">${{ ingredient.price_per_unit }}</td>
+          <td class="py-3 px-6 space-x-2 flex justify-center">
             <a href="{% url 'ingredient_update' ingredient.id %}" 
-               class="bg-green-400/80 hover:bg-green-500 text-white px-3 py-1.5 rounded-xl shadow transition transform hover:scale-105">
-              ✏️ Edit
+               class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl shadow-md font-medium transition-all duration-150 flex items-center gap-1">
+              ✏️ Editar
             </a>
             <a href="{% url 'ingredient_delete' ingredient.id %}" 
-               class="bg-red-400/80 hover:bg-red-500 text-white px-3 py-1.5 rounded-xl shadow transition transform hover:scale-105">
-              🗑️ Delete
+               class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl shadow-md font-medium transition-all duration-150 flex items-center gap-1">
+              🗑️ Eliminar
             </a>
           </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="5" class="text-center py-6 text-gray-500 font-medium">
-            No ingredients found 🍃
+          <td colspan="5" class="text-center py-8 text-gray-500 font-medium">
+            No hay ingredientes registrados 🍃
           </td>
         </tr>
         {% endfor %}

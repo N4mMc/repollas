@@ -1,32 +1,38 @@
 {% extends "base.html" %}
+{% block title %}{% if form.instance.id %}Editar Ingrediente{% else %}Agregar Ingrediente{% endif %}{% endblock %}
+
 {% block content %}
-<div class="max-w-lg mx-auto mt-12 bg-yellow-100 p-8 rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300">
-  
-  <!-- Título -->
-  <h1 class="text-3xl font-extrabold mb-8 text-red-500 drop-shadow-sm text-center font-[Poppins]">
-    {% if form.instance.id %}✏️ Edit Ingredient{% else %}🍯 Add Ingredient{% endif %}
-  </h1>
+<div class="min-h-screen bg-yellow-100 p-10 font-[Poppins,sans-serif] flex justify-center items-start">
 
-  <!-- Formulario -->
-  <form method="post" class="space-y-6">
-    {% csrf_token %}
-    
-    <div class="space-y-4">
-      {{ form.as_p }}
-    </div>
+  <!-- === FORM CARD === -->
+  <div class="w-full max-w-lg bg-white rounded-3xl shadow-xl border-4 border-yellow-300 p-10">
 
-    <!-- Botones -->
-    <div class="flex justify-between items-center mt-8">
-      <a href="{% url 'ingredient_list' %}" 
-         class="text-red-500 font-semibold hover:text-red-600 transition transform hover:scale-105">
-        ← Back to list
-      </a>
+    <!-- === TITLE === -->
+    <h1 class="text-4xl font-extrabold text-red-600 text-center mb-10 drop-shadow-md flex items-center justify-center gap-2">
+      {% if form.instance.id %}✏️ Editar Ingrediente{% else %}🍯 Agregar Ingrediente{% endif %}
+    </h1>
 
-      <button type="submit" 
-              class="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105">
-        💾 Save
-      </button>
-    </div>
-  </form>
+    <!-- === FORM === -->
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+      
+      <div class="space-y-4">
+        {{ form.as_p }}
+      </div>
+
+      <!-- === ACTION BUTTONS === -->
+      <div class="flex justify-between items-center mt-8">
+        <a href="{% url 'ingredient_list' %}" 
+           class="text-red-500 font-semibold hover:text-red-600 transition transform hover:scale-105 flex items-center gap-1">
+          ← Volver a la lista
+        </a>
+
+        <button type="submit"
+                class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105 flex items-center gap-2">
+          💾 Guardar
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

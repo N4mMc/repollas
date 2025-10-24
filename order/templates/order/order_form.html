@@ -2,30 +2,37 @@
 {% block title %}Crear Orden{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-yellow-100 p-8 font-[Poppins,sans-serif]">
+<div class="min-h-screen bg-yellow-100 p-10 font-[Poppins,sans-serif]">
 
-  <!-- Encabezado -->
-  <div class="flex items-center gap-4 mb-8">
-    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-md">
-      🛒 Crear Nueva Orden De Insumos
+  <!-- === HEADER === -->
+  <div class="flex items-center justify-between mb-10">
+    <h1 class="text-4xl font-extrabold text-red-600 tracking-tight flex items-center gap-3 drop-shadow-md">
+      🛒 Crear Nueva Orden de Insumos
     </h1>
+    <a href="{% url 'order_list' %}" 
+       class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-5 py-2 rounded-xl font-semibold shadow-md transition duration-200 flex items-center gap-2">
+      ← Volver a la Lista
+    </a>
   </div>
 
-  <!-- Formulario -->
-  <form method="post" id="orderForm" class="bg-white p-8 rounded-2xl shadow-xl border-4 border-yellow-300 space-y-6">
+  <!-- === FORM === -->
+  <form method="post" id="orderForm"
+        class="bg-white p-10 rounded-3xl shadow-2xl border-4 border-yellow-300 space-y-6 transition-all duration-300">
     {% csrf_token %}
 
-    <!-- Encabezado de ingredientes -->
+    <!-- === SUBHEADER === -->
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-semibold text-orange-600">🥣 Ingredientes</h2>
-      <button type="button" id="addRow" 
-        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl shadow-md transition-all duration-200 font-semibold">
+      <h2 class="text-2xl font-bold text-orange-600 flex items-center gap-2">
+        🥣 Ingredientes
+      </h2>
+      <button type="button" id="addRow"
+              class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl shadow-md transition-all duration-200 font-semibold flex items-center gap-2">
         ➕ Agregar Ingrediente
       </button>
     </div>
 
-    <!-- Tabla de ingredientes -->
-    <div class="overflow-hidden rounded-xl border-2 border-yellow-300 shadow-inner bg-yellow-50">
+    <!-- === INGREDIENTS TABLE === -->
+    <div class="overflow-hidden rounded-2xl border-2 border-yellow-300 shadow-inner bg-yellow-50">
       <table class="w-full text-base text-gray-700" id="ingredientTable">
         <thead class="bg-yellow-200 text-gray-800 uppercase text-sm font-bold border-b-2 border-yellow-400">
           <tr>
@@ -36,9 +43,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white hover:bg-yellow-50 transition duration-150">
+          <tr class="bg-white hover:bg-yellow-100 transition duration-150">
             <td class="p-3">
-              <select name="ingredient_id[]" class="border-2 border-yellow-300 rounded-xl p-2 w-full bg-white focus:ring-2 focus:ring-orange-400 focus:outline-none">
+              <select name="ingredient_id[]" 
+                      class="border-2 border-yellow-300 rounded-xl p-2 w-full bg-white focus:ring-2 focus:ring-orange-400 focus:outline-none">
                 <option value="">-- Selecciona --</option>
                 {% for ingredient in ingredients %}
                   <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
@@ -47,14 +55,15 @@
             </td>
             <td class="p-3">
               <input type="number" name="quantity[]" min="1" value="1"
-                class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
             </td>
             <td class="p-3">
               <input type="number" name="cost[]" min="0" step="0.01"
-                class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                     class="border-2 border-yellow-300 rounded-xl p-2 w-full focus:ring-2 focus:ring-orange-400 focus:outline-none">
             </td>
             <td class="p-3 text-center">
-              <button type="button" class="removeRow bg-red-500 text-white px-3 py-1 rounded-xl hover:bg-red-600 shadow-md transition duration-150">
+              <button type="button"
+                      class="removeRow bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl shadow-md transition duration-150">
                 🗑️
               </button>
             </td>
@@ -63,38 +72,39 @@
       </table>
     </div>
 
-    <!-- Botón de guardar -->
-    <div class="flex justify-end mt-6">
-      <button type="submit" 
-        class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg font-bold text-lg transition-all duration-200">
+    <!-- === SUBMIT BUTTON === -->
+    <div class="flex justify-end mt-8">
+      <button type="submit"
+              class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-2xl shadow-lg font-bold text-lg transition-all duration-200">
         💾 Guardar Orden
       </button>
     </div>
   </form>
 </div>
 
+<!-- === SCRIPT === -->
 <script>
-// 👉 Agregar fila de ingrediente
-document.getElementById('addRow').addEventListener('click', () => {
-  const table = document.querySelector('#ingredientTable tbody');
-  const newRow = table.rows[0].cloneNode(true);
-
-  // Limpiar valores
-  newRow.querySelectorAll('input').forEach(input => input.value = '');
-  newRow.querySelector('select').selectedIndex = 0;
-
-  table.appendChild(newRow);
-});
-
-// 👉 Eliminar fila
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('removeRow')) {
-    const row = e.target.closest('tr');
+  // ➕ Agregar nueva fila de ingrediente
+  document.getElementById('addRow').addEventListener('click', () => {
     const table = document.querySelector('#ingredientTable tbody');
-    if (table.rows.length > 1) {
-      row.remove();
+    const newRow = table.rows[0].cloneNode(true);
+
+    // Limpiar valores de inputs y selects
+    newRow.querySelectorAll('input').forEach(input => input.value = '');
+    newRow.querySelector('select').selectedIndex = 0;
+
+    table.appendChild(newRow);
+  });
+
+  // 🗑️ Eliminar fila de ingrediente
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('removeRow')) {
+      const row = e.target.closest('tr');
+      const table = document.querySelector('#ingredientTable tbody');
+      if (table.rows.length > 1) {
+        row.remove();
+      }
     }
-  }
-});
+  });
 </script>
 {% endblock %}

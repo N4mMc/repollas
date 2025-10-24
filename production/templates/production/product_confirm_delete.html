@@ -1,31 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-lg mx-auto mt-24 bg-yellow-100 p-10 rounded-3xl shadow-lg shadow-yellow-200 border border-yellow-300 text-center font-[Poppins]">
+<div class="flex items-center justify-center min-h-screen bg-[#FFF9E5] px-4 sm:px-6 lg:px-8 font-[Poppins]">
 
-  <!-- Título -->
-  <h2 class="text-3xl font-extrabold mb-6 text-red-600 drop-shadow-sm">
-    ⚠️ Confirmar Eliminación
-  </h2>
+  <div class="w-full max-w-md bg-[#FFF7D1] p-8 sm:p-10 rounded-3xl shadow-xl shadow-yellow-200 border border-yellow-300 text-center transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]">
 
-  <!-- Mensaje -->
-  <p class="text-gray-700 text-lg mb-8">
-    ¿Seguro que deseas eliminar el producto 
-    <span class="font-semibold text-orange-600">"{{ object.name }}"</span>?  
-    Esta acción <span class="text-red-500 font-semibold">no se puede deshacer.</span>
-  </p>
+    <!-- Título -->
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-[#E94E1B] drop-shadow-sm">
+      ⚠️ Confirmar Eliminación
+    </h2>
 
-  <!-- Formulario -->
-  <form method="post" class="flex justify-center gap-6">
-    {% csrf_token %}
-    <a href="{% url 'product_list' %}" 
-       class="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105">
-       🚫 Cancelar
-    </a>
+    <!-- Mensaje -->
+    <p class="text-gray-700 text-base sm:text-lg mb-8 leading-relaxed">
+      ¿Seguro que deseas eliminar el producto 
+      <span class="font-semibold text-[#E67E22]">"{{ object.name }}"</span>?  
+      Esta acción <span class="text-red-500 font-semibold">no se puede deshacer.</span>
+    </p>
 
-    <button type="submit" 
-            class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2.5 rounded-2xl shadow-md transition transform hover:scale-105">
-      🗑️ Eliminar
-    </button>
-  </form>
+    <!-- Formulario -->
+    <form method="post" class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+      {% csrf_token %}
+
+      <a href="{% url 'product_list' %}" 
+         class="w-full sm:w-auto bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-2xl shadow-md transition transform hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+         🚫 Cancelar
+      </a>
+
+      <button type="submit" 
+              class="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-md transition transform hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+        🗑️ Eliminar
+      </button>
+    </form>
+
+  </div>
 </div>
 {% endblock %}
